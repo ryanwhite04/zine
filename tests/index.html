@@ -23,7 +23,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-3LMBYHTSBF');
 </script>
 
@@ -34,7 +33,9 @@
 
 <style>
 @media only screen and (min-width: 1440px) {
-     body {font-size: 14.4px;}
+  body {
+    font-size: 14.4px;
+  }
 }
 
 /*COLLECTIONS*/  
@@ -45,12 +46,12 @@
 
 /*BUTTON OUTLINES*/
 .nav-button, .nav-button:hover, .nav-button:active, .filter-button, .filter-button:hover {
-	-webkit-text-stroke: 0.08rem #323f63;
+  -webkit-text-stroke: 0.08rem #323f63;
 }
 
 /*FILTER, LIST & SUBMIT BUTTON OUTLINES*/
 .list-button, .list-button:hover, .page-button, .page-button:hover {
-	-webkit-text-stroke: 0.08rem #323f63;
+  -webkit-text-stroke: 0.08rem #323f63;
 }
 
 /*LINK HIGHLIGHT*/
@@ -118,11 +119,15 @@
 }
   
 /*H1 - UNDERLINE*/
-  .h1 {
+.h1 {
   text-decoration: underline wavy #a3555a;
   text-underline-offset: 0.2em;
   text-decoration-thickness: 0.09em;
-	text-underline-position: under;
+  text-underline-position: under;
+}
+
+.tag {
+	display: none !important;
 }
 </style>
 <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
