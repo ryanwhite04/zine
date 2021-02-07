@@ -112,76 +112,24 @@
 <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.js"></script>
 
 <script>
-// Using JetBooster for this
-// This will stop working if you stop paying I think
-// At which point can swap to embeding tags in the list items
-async function getCollection(tag) {
-  const boosterId = "ckktie1lf38sp0794uvr987ni";
-  const body = await fetch(`https://api.jetboost.io/filter?boosterId=${boosterId}&q=${tag}&v=2`).catch(console.error);
-  const json = await body.json().catch(console.error);
-  console.log('getCollection', tag, json);
-  return Object.entries(json).filter(([slug, found]) => found).map(([slug]) => slug);
-}
-
-// To filter based on a tag, you need all the items
-// that are in the collection correcponsing to that tag
-// Then you just use the arrange function of iso with a filter property
-function filter(iso) {
-  console.log('creating filter');
-  return async function(tag) {
-    iso.arrange({
-      filter: (item) => {
-        let collection = [...item.querySelectorAll('div')].slice(1).map(item => item.textContent)
-        console.log(tag, collection)
-        return collection.includes(tag)
-      }
-    });
-  }
-}
-
-// This takes out any weird characters,
-// makes the string lowercase
-// and replaces spaces with dashes
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .replace(/ /g,'-')
-    .replace(/[^\w-]+/g,'');
-}
-
-async function main() {
-
-  // Grab the gridlist that has all the images
-  const grid = document.querySelector('.grid');
-
-  // Make a new isotope object for arranging/sorting/filtereing
-  const iso = new Isotope(grid, {
-    itemSelector: '.grid-item',
-    percentPosition: true,
-    masonry: { } // Make it arrange in masonry style
+(iso => {
+  [...document.getElementsByClassName('filter-item')].map(item => {
+    /* this function is run on each of the filter buttons */
+    item.addEventListener('click', () => iso.arrange({
+      filter: i => [...i.getElementsByClassName('tag')] // replace with '.item-tag'
+        .map(t => t.textContent)
+        .includes(item.textContent // replaces spaces with dashes and lowercases
+          .toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'')
+        )
+    }))
   });
-
-  // These are all the buttons for filtering
-  const filterItems = [...document.getElementsByClassName('filter-item')];
-  
-  // For each one, make is so when you click on it 
-  // it filters the images based on its tag
-  filterItems.map(filterItem => {
-    const tag = slugify(filterItem.textContent);
-    // Can use the value of the input instead,
-    // but will disappear if you stop uing jetboost
-    
-    const filterFunction = filter(iso);
-    filterItem.addEventListener('click', () => filterFunction(tag))
-  })
-
-  // make the layout update as the images are loading
-  imagesLoaded(grid).on('progress', () => {
-    console.log('progress');
-    iso.layout();
-  });
-}
-
-main();
-</script></body></html>
+  imagesLoaded(iso.element).on('progress', () => iso.layout());
+})(new Isotope('.grid', {
+  itemSelector: '.grid-item', // should match the class on items in list
+  percentPosition: true,
+  masonry: { } // styles like bricks
+}))
+</script>
+</body>
+</html>
 
